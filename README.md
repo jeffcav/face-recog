@@ -1,2 +1,2 @@
-# face-recog
+# Face Recognition
 Face recognition with machine learning
