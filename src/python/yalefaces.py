@@ -12,23 +12,16 @@ def _to_image(filepath: str):
     return np.array(image_pil, 'uint8').flatten()
 
 def _to_label(filepath: str):
-    """
-        Arg filename comes in format: '/home/user/yalefaces/subject03.sad.gif',
-        with subject ids starting in 01 and ending in 11.
-
-        This function first gets the file name without extension,
-            result: 'subject03.sad'
-        then gets the subject identifier,
-            result: 'subject03'
-        then gets the number in its identifier,
-            result: 03
-        then converts to integer and subtracts 1 so our labels stay in range [0, 10]
-            result: 2
-    """
-
+    # "/home/yalefaces/subject03.sad.gif" -> "subject03.sad"
     filename = os.path.split(filepath)[1]
+
+    # "subject03.sad" -> "subject03"
     subject = filename.split(".")[0]
+
+    # "subject03" -> "03"
     subject_id = subject.replace("subject", "")
+
+    # "03" -> 2
     return int(subject_id) - 1
 
 def load(folder_path: str):
