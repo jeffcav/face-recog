@@ -1,0 +1,2 @@
+best_params,best_score,elapsed_time_ns,cpu_process_time_ns
+"{'algorithm': 'ball_tree', 'metric': 'euclidean', 'n_neighbors': 2, 'weights': 'distance'}",0.7304347826086957,135194911000,770411000
