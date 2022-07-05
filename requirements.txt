@@ -4,3 +4,4 @@ sklearn
 matplotlib
 keras
 tensorflow
+tensorflow-gpu
