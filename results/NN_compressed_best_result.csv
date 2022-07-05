@@ -1,2 +1,2 @@
 best_params,best_score,elapsed_time_ns,cpu_process_time_ns
-"{'activation': 'tanh', 'alpha': 0.1, 'hidden_layer_sizes': (500, 400, 300, 200, 100, 50), 'learning_rate': 'constant', 'max_iter': 7600, 'solver': 'adam'}",0.7565217391304347,541464755000,58327117000
+"{'solver': 'sgd', 'max_iter': 7600, 'learning_rate': 'constant', 'hidden_layer_sizes': (500, 400, 300, 200, 100), 'alpha': 1, 'activation': 'tanh'}",0.8521739130434783,595675961000,461080857000

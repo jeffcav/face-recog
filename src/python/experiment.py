@@ -96,10 +96,11 @@ def grid_search_fit(estimator, param_grid, result_mgt, X, y):
     
     return classifier
 
-def random_search_fit(estimator, param_grid, result_mgt, X, y):
+def random_search_fit(estimator, param_grid, result_mgt, random_state,  X, y):
 
     search = RandomizedSearchCV(estimator = estimator, 
-        param_distributions = param_grid, scoring = 'accuracy', cv = KFold(n_splits=5), return_train_score=True, n_jobs=4, random_state=SEED, n_iter=16)
+        param_distributions = param_grid, scoring = 'accuracy', cv = KFold(n_splits=5), return_train_score=True, 
+        n_jobs=4, random_state=random_state, n_iter=16)
 
     start_time = time.time_ns()    
     start_process_time = time.process_time_ns()
