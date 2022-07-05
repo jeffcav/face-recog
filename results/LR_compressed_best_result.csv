@@ -1,2 +1,2 @@
 best_params,best_score,elapsed_time_ns,cpu_process_time_ns
-"{'C': 1e-05, 'max_iter': 7600, 'multi_class': 'multinomial', 'penalty': 'none', 'solver': 'newton-cg'}",0.8782608695652174,52298366000,785954000
+"{'C': 1e-05, 'max_iter': 7600, 'multi_class': 'multinomial', 'penalty': 'none', 'solver': 'newton-cg'}",0.8782608695652174,42197716000,749776000
