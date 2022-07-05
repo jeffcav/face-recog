@@ -1,8 +1,12 @@
 import ast
 import enum
 import os
+import time
 import pickle
 import pandas as pd
+from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import RandomizedSearchCV
+from sklearn.model_selection import KFold
 
 class ClassifierType(enum.Enum):
     LR = 1
@@ -11,6 +15,7 @@ class ClassifierType(enum.Enum):
     CNN = 4
 
 BEST_MODEL_NAME= 'model'
+FIT_TIME_NAME = 'fit_time.csv'
 BEST_RESULT_NAME= 'best_result.csv'
 CV_RESULT_NAME= 'cv_results.csv'
 PREDICTIONS_NAME = 'predictions.csv' 
@@ -35,11 +40,11 @@ class ResultFileManagement:
 
     def read_best_params(self):
         df_ = pd.read_csv(self.full_file_name(BEST_RESULT_NAME))
-        ast.literal_eval(df_['best_params'].iloc[0])
+        return ast.literal_eval(df_['best_params'].iloc[0])
 
     def read_best_score(self):
         df_ = pd.read_csv(self.full_file_name(BEST_RESULT_NAME))
-        ast.literal_eval(df_['best_score'].iloc[0])
+        return ast.literal_eval(df_['best_score'].iloc[0])
 
     def write_cv_results(self, cv_results):
         df = pd.DataFrame(cv_results)
@@ -69,3 +74,46 @@ class ResultFileManagement:
     def create_dir(self):
         if not os.path.exists(RESULT_DIR_PATH):
             os.mkdir(RESULT_DIR_PATH)
+
+
+def grid_search_fit(estimator, param_grid, result_mgt, X, y):
+
+    search = GridSearchCV(estimator = estimator, 
+        param_grid = param_grid, scoring = 'accuracy', cv = KFold(n_splits=5), return_train_score=True, n_jobs=4)
+
+    start_time = time.time_ns()    
+    start_process_time = time.process_time_ns()
+
+    classifier = search.fit(X, y)
+    
+    end_process_time = time.process_time_ns()
+    elapsed_time = time.time_ns() - start_time
+    cpu_process_time =  end_process_time - start_process_time
+
+    result_mgt.write_model(classifier)
+    result_mgt.write_best_result(search.best_params_, search.best_score_, elapsed_time, cpu_process_time)
+    result_mgt.write_cv_results(search.cv_results_)
+    
+    return classifier
+
+def random_search_fit(estimator, param_grid, result_mgt, X, y):
+
+    search = RandomizedSearchCV(estimator = estimator, 
+        param_distributions = param_grid, scoring = 'accuracy', cv = KFold(n_splits=5), return_train_score=True, n_jobs=4, random_state=SEED, n_iter=16)
+
+    start_time = time.time_ns()    
+    start_process_time = time.process_time_ns()
+
+    classifier = search.fit(X, y)
+    
+    end_process_time = time.process_time_ns()
+    elapsed_time = time.time_ns() - start_time
+    cpu_process_time =  end_process_time - start_process_time
+
+    result_mgt.write_model(classifier)
+    result_mgt.write_best_result(search.best_params_, search.best_score_, elapsed_time, cpu_process_time)
+    result_mgt.write_cv_results(search.cv_results_)
+    
+    return classifier
+
+
